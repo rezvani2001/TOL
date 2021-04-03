@@ -158,6 +158,7 @@ public class Draw extends Application {
             }
         });
 
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }
