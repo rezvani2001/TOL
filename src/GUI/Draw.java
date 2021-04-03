@@ -34,8 +34,9 @@ public class Draw extends Application {
         Stage stage = new Stage();
         BorderPane borderPane = new BorderPane();
 
-        Button selectInput = new Button("select file");
-        selectInput.setTooltip(new Tooltip("select input xml file"));
+        Button selectInput = new Button("Select File");
+        selectInput.setId("SelectInputFileButton");
+        selectInput.setTooltip(new Tooltip("Select Input XML File"));
 
         VBox buttonBox = new VBox(10);
         buttonBox.setAlignment(Pos.CENTER);
@@ -51,8 +52,8 @@ public class Draw extends Application {
         BorderPane.setMargin(buttonBox, new Insets(20));
 
         AnchorPane pane = new AnchorPane();
+        pane.setId("WorkSpacePane");
         borderPane.setCenter(pane);
-        pane.setStyle("-fx-border-color: black ; -fx-border-width: 5");
 
         BorderPane.setMargin(pane, new Insets(0, 20, 20, 20));
 
@@ -158,6 +159,9 @@ public class Draw extends Application {
             }
         });
 
+        String cssFilePath = "GUI/CssFiles/MainPageStyle.css";
+        scene.getStylesheets().add(cssFilePath);
+        primaryStage.setMaximized(true);
         primaryStage.setResizable(false);
         primaryStage.show();
     }
