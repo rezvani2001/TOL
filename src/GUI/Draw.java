@@ -100,10 +100,10 @@ public class Draw extends Application {
                             AnchorPane.setLeftAnchor(label, state.centerX * 5 - 10);
                         }
                     } else {
-                        new Alert(Alert.AlertType.ERROR, "this file format is not supported").showAndWait();
+                        new Alert(Alert.AlertType.ERROR, "This File Format Is Not Supported").showAndWait();
                     }
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "file note found").showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "File Not Found... :(").showAndWait();
                 }
             } else {
                 stage.requestFocus();
