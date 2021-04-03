@@ -80,8 +80,8 @@ public class Draw extends Application {
                         pane.get().setId("WorkSpacePane");
                         borderPane.setCenter(pane.get());
 
-                        for (State state : Main.automatas.states){
-                            Circle circle = new Circle(state.centerX , state.centerY, 30);
+                        for (State state : Main.automatas.states) {
+                            Circle circle = new Circle(state.centerX, state.centerY, 30);
 
                             if (state.isFinal) {
                                 circle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
@@ -92,16 +92,16 @@ public class Draw extends Application {
                             }
 
                             Label label = new Label(state.name);
-                            pane.get().getChildren().addAll(circle , label);
+                            pane.get().getChildren().addAll(circle, label);
 
-                            AnchorPane.setTopAnchor(circle , state.centerY * 5);
-                            AnchorPane.setLeftAnchor(circle , state.centerX * 5);
+                            AnchorPane.setTopAnchor(circle, state.centerY * 5);
+                            AnchorPane.setLeftAnchor(circle, state.centerX * 5);
 
-                            AnchorPane.setTopAnchor(label , state.centerY * 5 - 10);
-                            AnchorPane.setLeftAnchor(label , state.centerX * 5 - 10);
+                            AnchorPane.setTopAnchor(label, state.centerY * 5 - 10);
+                            AnchorPane.setLeftAnchor(label, state.centerX * 5 - 10);
                         }
                     } else {
-                        new Alert(Alert.AlertType.ERROR , "this file format is not supported").showAndWait();
+                        new Alert(Alert.AlertType.ERROR, "this file format is not supported").showAndWait();
                     }
                 } else {
                     new Alert(Alert.AlertType.ERROR, "file note found").showAndWait();
