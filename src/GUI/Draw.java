@@ -161,6 +161,7 @@ public class Draw extends Application {
 
         String cssFilePath = "GUI/CssFiles/MainPageStyle.css";
         scene.getStylesheets().add(cssFilePath);
+        primaryStage.setTitle("TOL Project");
         primaryStage.setMaximized(true);
         primaryStage.setResizable(false);
         primaryStage.show();
