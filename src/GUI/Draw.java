@@ -1,10 +1,6 @@
 package GUI;
 
-import GUI.Shapes.ArrayToItSelf;
-import GUI.Shapes.RegularArray;
-import States.MainState;
-import Transitions.MainTransition;
-import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,18 +14,18 @@ import javafx.stage.FileChooser;
 import logic.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import logic.processData.State;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Draw extends Application {
-    public static List<Circle> circles = new ArrayList<>();
-
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         Stage stage = new Stage();
         BorderPane borderPane = new BorderPane();
@@ -51,16 +47,15 @@ public class Draw extends Application {
 
         BorderPane.setMargin(buttonBox, new Insets(20));
 
-        AnchorPane pane = new AnchorPane();
-        pane.setId("WorkSpacePane");
-        borderPane.setCenter(pane);
+        AtomicReference<AnchorPane> pane = new AtomicReference<>(new AnchorPane());
+        pane.get().setId("WorkSpacePane");
 
-        BorderPane.setMargin(pane, new Insets(0, 20, 20, 20));
+        BorderPane.setMargin(pane.get(), new Insets(0, 20, 20, 20));
+        borderPane.setCenter(pane.get());
 
 
         Scene scene = new Scene(borderPane, 400, 400);
         primaryStage.setScene(scene);
-
 
         selectInput.setOnAction(event -> {
             if (!inputIsOpen.get()) {
@@ -72,87 +67,44 @@ public class Draw extends Application {
 
                 if (selectedFile != null) {
 
-                    Thread thread = new Thread(() -> Main.main(selectedFile));
+                    if (selectedFile.getPath().contains(".xml")) {
+                        Thread thread = new Thread(() -> Main.main(selectedFile));
 
-                    thread.start();
-                    try {
-                        thread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    while (!pane.getChildren().isEmpty()){
-                        pane.getChildren().remove(0);
-                    }
-
-                    for (MainState state : Main.automata.States.state) {
-                        Circle circle = new Circle(state.positionX, state.positionY, 30, Color.RED);
-                        circles.add(circle);
-
-                        circle.setStyle("-fx-fill: lightgray; -fx-stroke: black; -fx-stroke-width: 2");
-                        circle.setAccessibleText(state.name);
-
-                        Label stateName = new Label(state.name);
-
-                        pane.getChildren().addAll(circle , stateName);
-
-                        AnchorPane.setLeftAnchor(circle, state.positionX * 5);
-                        AnchorPane.setTopAnchor(circle, state.positionY * 5);
-
-                        AnchorPane.setLeftAnchor(stateName, state.positionX * 5 + 22);
-                        AnchorPane.setTopAnchor(stateName, state.positionY * 5 + 22);
-                    }
-
-                    Thread transition = new Thread(() -> {
-                        Circle source;
-                        Circle dest;
-                        for (MainTransition transitions : Main.automata.Transitions.transition) {
-                            dest = null;
-                            source = null;
-                            for (Circle circle : circles) {
-                                if (transitions.source.equals(circle.getAccessibleText())) source = circle;
-                                if (transitions.destination.equals(circle.getAccessibleText())) dest = circle;
-
-                                if (source != null && dest != null) break;
-                            }
-
-
-                            if (dest == source) {
-                                Circle finalSource = source;
-                                Platform.runLater(() -> {
-                                    ArrayToItSelf arrayToItSelf = new ArrayToItSelf(finalSource.getCenterX(),
-                                            finalSource.getCenterY(), transitions.label, transitions.name);
-
-                                    pane.getChildren().add(arrayToItSelf.pane);
-
-                                    AnchorPane.setLeftAnchor(arrayToItSelf.pane, finalSource.getCenterX() * 5);
-                                    AnchorPane.setTopAnchor(arrayToItSelf.pane, finalSource.getCenterY() * 5 - 50);
-                                });
-                            } else {
-                                Circle finalDest = dest;
-                                Circle finalSource = source;
-                                Platform.runLater(() -> {
-                                    RegularArray regularArray = new RegularArray(
-                                            transitions.label, transitions.name,
-                                            finalSource.getCenterX(), finalSource.getCenterY(),
-                                            finalDest.getCenterX(), finalDest.getCenterY()
-                                    );
-
-                                    pane.getChildren().add(regularArray.pane);
-
-                                    if (finalDest.getCenterX() >= finalSource.getCenterX()){
-                                        AnchorPane.setLeftAnchor(regularArray.pane, finalSource.getCenterX() * 5 + 60);
-                                        AnchorPane.setTopAnchor(regularArray.pane, finalSource.getCenterY() * 5 + 30);
-                                    } else {
-                                        AnchorPane.setLeftAnchor(regularArray.pane, finalDest.getCenterX() * 5 + 60);
-                                        AnchorPane.setTopAnchor(regularArray.pane, finalDest.getCenterY() * 5 + 30);
-                                    }
-                                });
-                            }
+                        thread.start();
+                        try {
+                            thread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    });
+                        pane.set(new AnchorPane());
+                        pane.get().setId("WorkSpacePane");
+                        borderPane.setCenter(pane.get());
 
-                    transition.start();
+                        for (State state : Main.automatas.states){
+                            Circle circle = new Circle(state.centerX , state.centerY, 30);
+
+                            if (state.isFinal) {
+                                circle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
+                            } else if (state.isInitial) {
+                                circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
+                            } else {
+                                circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
+                            }
+
+                            Label label = new Label(state.name);
+                            pane.get().getChildren().addAll(circle , label);
+
+                            AnchorPane.setTopAnchor(circle , state.centerY * 5);
+                            AnchorPane.setLeftAnchor(circle , state.centerX * 5);
+
+                            AnchorPane.setTopAnchor(label , state.centerY * 5 - 10);
+                            AnchorPane.setLeftAnchor(label , state.centerX * 5 - 10);
+                        }
+                    } else {
+                        new Alert(Alert.AlertType.ERROR , "this file format is not supported").showAndWait();
+                    }
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "file note found").showAndWait();
                 }
             } else {
                 stage.requestFocus();
