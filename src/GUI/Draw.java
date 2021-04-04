@@ -117,8 +117,8 @@ public class Draw extends Application {
                                 Platform.runLater(() -> {
                                     pane.get().getChildren().addAll(circlePane);
 
-                                    AnchorPane.setTopAnchor(circlePane, state.centerY * 5);
-                                    AnchorPane.setLeftAnchor(circlePane, state.centerX * 5);
+                                    AnchorPane.setTopAnchor(circlePane, state.centerY * 6);
+                                    AnchorPane.setLeftAnchor(circlePane, state.centerX * 6);
                                 });
 
                                 elements.circles.add(circlePane);
@@ -135,8 +135,8 @@ public class Draw extends Application {
                                     Platform.runLater(() -> {
                                         pane.get().getChildren().addAll(transitionPane);
 
-                                        AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 5);
-                                        AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 5 - 50);
+                                        AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 6);
+                                        AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 6 - 6);
                                     });
                                 } else {
                                     transitionPane = new RegularArrow(
@@ -152,12 +152,12 @@ public class Draw extends Application {
                                         if (transition.start.centerY < transition.end.centerY &&
                                                 transition.start.centerX > transition.end.centerX) {
 
-                                            AnchorPane.setLeftAnchor(transitionPane, transition.end.centerX * 5 + 60);
-                                            AnchorPane.setTopAnchor(transitionPane, transition.end.centerY * 5 + 30);
+                                            AnchorPane.setLeftAnchor(transitionPane, transition.end.centerX * 6 + 60);
+                                            AnchorPane.setTopAnchor(transitionPane, transition.end.centerY * 6 + 30);
 
                                         } else {
-                                            AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 5 + 60);
-                                            AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 5 + 30);
+                                            AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 6 + 60);
+                                            AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 6 + 30);
                                         }
                                     });
                                 }
@@ -169,10 +169,9 @@ public class Draw extends Application {
                     } else {
                         new Alert(Alert.AlertType.ERROR, "this file format is not supported").showAndWait();
                     }
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "file note found").showAndWait();
                 }
             } else {
+                stage.setAlwaysOnTop(true);
                 stage.requestFocus();
             }
         });

@@ -2,6 +2,7 @@ package GUI.Shapes;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 
@@ -102,15 +103,18 @@ public class ArrowToItSelf {
 
         Label label = new Label(this.label);
 
+        path.setStroke(Color.BLACK);
+        path.setStrokeWidth(2);
+
         anchor.getChildren().add(path);
         anchor.getChildren().add(label);
 
 
         AnchorPane.setLeftAnchor(path , 0.0);
-        AnchorPane.setTopAnchor(path , 0.0);
+        AnchorPane.setTopAnchor(path , -45.0);
 
         AnchorPane.setLeftAnchor(label , 22.5);
-        AnchorPane.setTopAnchor(label , 17.5);
+        AnchorPane.setTopAnchor(label , -27.5);
 
         return anchor;
     }
