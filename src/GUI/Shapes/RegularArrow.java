@@ -8,7 +8,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
 
 
-public class RegularArray {
+public class RegularArrow {
     public String label;
 
     public String name;
@@ -21,7 +21,7 @@ public class RegularArray {
 
     public AnchorPane pane;
 
-    public RegularArray(String label, String name, double startX, double startY,
+    public RegularArrow(String label, String name, double startX, double startY,
                         double endX, double endY) {
 
         this.label = label;

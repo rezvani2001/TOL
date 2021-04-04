@@ -1,6 +1,8 @@
 package logic.processData;
 
 
+import javafx.scene.shape.Circle;
+
 public class State {
     public boolean isFinal = false;
     public boolean isInitial = false;

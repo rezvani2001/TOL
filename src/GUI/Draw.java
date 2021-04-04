@@ -1,5 +1,8 @@
 package GUI;
 
+import GUI.Shapes.ArrowToItSelf;
+import GUI.Shapes.RegularArrow;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,13 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import logic.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import logic.processData.State;
+import logic.processData.Transitions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,7 +57,7 @@ public class Draw extends Application {
         borderPane.setCenter(pane.get());
 
 
-        Scene scene = new Scene(borderPane, 400, 400);
+        Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
 
         selectInput.setOnAction(event -> {
@@ -80,28 +83,83 @@ public class Draw extends Application {
                         pane.get().setId("WorkSpacePane");
                         borderPane.setCenter(pane.get());
 
-                        for (State state : Main.automatas.states){
-                            Circle circle = new Circle(state.centerX , state.centerY, 30);
+                        BorderPane.setMargin(pane.get(), new Insets(0, 20, 20, 20));
+                        borderPane.setCenter(pane.get());
 
-                            if (state.isFinal) {
-                                circle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
-                            } else if (state.isInitial) {
-                                circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
-                            } else {
-                                circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
+                        UiElements elements = new UiElements();
+
+
+                        thread = new Thread(() -> {
+                            for (State state : Main.automatas.states) {
+                                AnchorPane circlePane = new AnchorPane();
+
+                                Circle circle = new Circle(state.centerX, state.centerY, 26);
+
+                                if (state.isFinal) {
+                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
+                                } else if (state.isInitial) {
+                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
+                                    circle.setRadius(27);
+                                } else {
+                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: black; -fx-stroke-width: 2");
+                                    circle.setRadius(28);
+                                }
+
+                                Label label = new Label(state.name);
+                                circlePane.getChildren().addAll(circle, label);
+
+                                AnchorPane.setLeftAnchor(circle, 0.0);
+                                AnchorPane.setTopAnchor(circle, 0.0);
+
+                                AnchorPane.setTopAnchor(label, 19.5);
+                                AnchorPane.setLeftAnchor(label, 27 - label.getText().length() * 2.5);
+
+                                Platform.runLater(() -> {
+                                    pane.get().getChildren().addAll(circlePane);
+
+                                    AnchorPane.setTopAnchor(circlePane, state.centerY * 5);
+                                    AnchorPane.setLeftAnchor(circlePane, state.centerX * 5);
+                                });
+
+                                elements.circles.add(circlePane);
                             }
 
-                            Label label = new Label(state.name);
-                            pane.get().getChildren().addAll(circle , label);
 
-                            AnchorPane.setTopAnchor(circle , state.centerY * 5);
-                            AnchorPane.setLeftAnchor(circle , state.centerX * 5);
+                            for (Transitions transition : Main.automatas.transitions) {
+                                AnchorPane transitionPane;
 
-                            AnchorPane.setTopAnchor(label , state.centerY * 5 - 10);
-                            AnchorPane.setLeftAnchor(label , state.centerX * 5 - 10);
-                        }
+                                if (transition.isLoop) {
+                                    transitionPane = new ArrowToItSelf(transition.start.centerX,
+                                            transition.start.centerY, transition.label, transition.name).pane;
+
+                                    Platform.runLater(() -> {
+                                        pane.get().getChildren().addAll(transitionPane);
+
+                                        AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 5);
+                                        AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 5 - 50);
+                                    });
+                                } else {
+                                    transitionPane = new RegularArrow(
+                                            transition.label, transition.name,
+                                            transition.start.centerX, transition.start.centerY,
+                                            transition.end.centerX, transition.end.centerY
+                                    ).pane;
+
+
+                                    Platform.runLater(() -> {
+                                        pane.get().getChildren().addAll(transitionPane);
+
+                                        AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 5 + 17.5);
+                                        AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 5 + 30);
+                                    });
+                                }
+                                elements.transitions.add(transitionPane);
+                            }
+                        });
+                        thread.start();
+
                     } else {
-                        new Alert(Alert.AlertType.ERROR , "this file format is not supported").showAndWait();
+                        new Alert(Alert.AlertType.ERROR, "this file format is not supported").showAndWait();
                     }
                 } else {
                     new Alert(Alert.AlertType.ERROR, "file note found").showAndWait();
@@ -118,4 +176,10 @@ public class Draw extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
+}
+
+
+class UiElements {
+    List<AnchorPane> circles = new ArrayList<>();
+    List<AnchorPane> transitions = new ArrayList<>();
 }

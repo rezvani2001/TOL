@@ -99,8 +99,7 @@ public class Main {
                     if (findFinal && findStart) break;
                 }
             }
-
-
+            destiny.transitions.add(newTransition);
         }
 
         Main.automatas = destiny;

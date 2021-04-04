@@ -5,7 +5,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.*;
 
 
-public class ArrayToItSelf{
+public class ArrowToItSelf {
     /*
      * array labels
      */
@@ -31,7 +31,7 @@ public class ArrayToItSelf{
      */
     public AnchorPane pane;
 
-    public ArrayToItSelf(double x, double y, String label, String name){
+    public ArrowToItSelf(double x, double y, String label, String name){
         this.x = x;
         this.y = y;
         this.label = label;
