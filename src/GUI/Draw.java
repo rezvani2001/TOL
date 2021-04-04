@@ -188,6 +188,6 @@ public class Draw extends Application {
 
 
 class UiElements {
-    List<AnchorPane> circles = new ArrayList<>();
-    List<AnchorPane> transitions = new ArrayList<>();
+    public List<AnchorPane> circles = new ArrayList<>();
+    public List<AnchorPane> transitions = new ArrayList<>();
 }
