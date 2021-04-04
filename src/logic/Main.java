@@ -90,7 +90,7 @@ public class Main {
                         }
                     }
                     if (!findStart) {
-                        if (state.name.equals(transition.destination)) {
+                        if (state.name.equals(transition.source)) {
                             state.outputTR++;
                             newTransition.start = state;
                             findStart = true;

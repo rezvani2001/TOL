@@ -149,8 +149,16 @@ public class Draw extends Application {
                                     Platform.runLater(() -> {
                                         pane.get().getChildren().addAll(transitionPane);
 
-                                        AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 5 + 17.5);
-                                        AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 5 + 30);
+                                        if (transition.start.centerY < transition.end.centerY &&
+                                                transition.start.centerX > transition.end.centerX) {
+
+                                            AnchorPane.setLeftAnchor(transitionPane, transition.end.centerX * 5 + 60);
+                                            AnchorPane.setTopAnchor(transitionPane, transition.end.centerY * 5 + 30);
+
+                                        } else {
+                                            AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 5 + 60);
+                                            AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 5 + 30);
+                                        }
                                     });
                                 }
                                 elements.transitions.add(transitionPane);
@@ -173,7 +181,7 @@ public class Draw extends Application {
         scene.getStylesheets().add(cssFilePath);
         primaryStage.setTitle("TOL Project");
         primaryStage.setMaximized(true);
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.show();
     }
 }
