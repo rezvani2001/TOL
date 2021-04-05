@@ -119,7 +119,7 @@ public class ArrowToItSelf {
         AnchorPane.setLeftAnchor(path , 0.0);
         AnchorPane.setTopAnchor(path , -45.0);
 
-        AnchorPane.setLeftAnchor(label , 22.5);
+        AnchorPane.setLeftAnchor(label , 25 - 2.5 * this.label.length());
         AnchorPane.setTopAnchor(label , -27.5);
 
         return anchor;
