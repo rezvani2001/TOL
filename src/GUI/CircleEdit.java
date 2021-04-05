@@ -45,7 +45,7 @@ public class CircleEdit extends Stage {
         this.makeSaveButton();
         this.mainPane.setAlignment(Pos.CENTER);
         String cssFilePath = "GUI/CssFiles/CircleEditPageStyle.css";
-        Scene scene = new Scene(this.mainPane, 350, 300);
+        Scene scene = new Scene(this.mainPane, 400, 350);
         scene.getStylesheets().add(cssFilePath);
         this.setScene(scene);
     }
