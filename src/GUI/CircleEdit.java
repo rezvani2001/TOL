@@ -36,6 +36,7 @@ public class CircleEdit extends Stage {
         this.mainPane = new VBox(8);
         this.makeScene();
         this.setTitle(String.format("Edit State %s", this.state.name));
+        this.setResizable(false);
         this.show();
     }
 
@@ -43,7 +44,9 @@ public class CircleEdit extends Stage {
         this.makeMainBody();
         this.makeSaveButton();
         this.mainPane.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(this.mainPane, 800, 500);
+        String cssFilePath = "GUI/CssFiles/CircleEditPageStyle.css";
+        Scene scene = new Scene(this.mainPane, 350, 300);
+        scene.getStylesheets().add(cssFilePath);
         this.setScene(scene);
     }
 
