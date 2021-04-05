@@ -1,5 +1,6 @@
 package GUI;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -41,7 +42,8 @@ public class CircleEdit extends Stage {
     private void makeScene() {
         this.makeMainBody();
         this.makeSaveButton();
-        Scene scene = new Scene(this.mainPane, 400, 500);
+        this.mainPane.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(this.mainPane, 800, 500);
         this.setScene(scene);
     }
 
@@ -91,12 +93,14 @@ public class CircleEdit extends Stage {
     private HBox addNewPart(Label label, TextArea textInput) {
         HBox pane = new HBox(10);
         pane.getChildren().addAll(label, textInput);
+        pane.setAlignment(Pos.CENTER);
         return pane;
     }
 
     private HBox addNewPart(CheckBox checkBox) {
         HBox pane = new HBox(10);
         pane.getChildren().add(checkBox);
+        pane.setAlignment(Pos.CENTER);
         return pane;
     }
 }
