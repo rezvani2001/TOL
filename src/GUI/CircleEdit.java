@@ -2,10 +2,7 @@ package GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -18,13 +15,13 @@ public class CircleEdit extends Stage {
     private final VBox mainPane;
 
     // TextArea for centerXPart of this stage
-    TextArea inputCenterX;
+    TextField inputCenterX;
 
     // TextArea for centerYPart of this stage
-    TextArea inputCenterY;
+    TextField inputCenterY;
 
     // TextArea for name of this stage
-    TextArea inputName;
+    TextField inputName;
 
     // CheckBox for isFinal part of this stage
     CheckBox isFinalState;
@@ -67,19 +64,19 @@ public class CircleEdit extends Stage {
 
     private void makeCenterX() {
         Label titleCenterX = new Label("CenterX :");
-        this.inputCenterX = new TextArea(String.valueOf(this.state.centerX));
+        this.inputCenterX = new TextField(String.valueOf(this.state.centerX));
         this.mainPane.getChildren().add(this.addNewPart(titleCenterX, this.inputCenterX));
     }
 
     private void makeCenterY() {
         Label titleCenterY = new Label("CenterY :");
-        this.inputCenterY = new TextArea(String.valueOf(this.state.centerY));
+        this.inputCenterY = new TextField(String.valueOf(this.state.centerY));
         this.mainPane.getChildren().add(this.addNewPart(titleCenterY, this.inputCenterY));
     }
 
     private void makeName() {
         Label titleName = new Label("Name :");
-        this.inputName = new TextArea(this.state.name);
+        this.inputName = new TextField(this.state.name);
         this.mainPane.getChildren().add(this.addNewPart(titleName, this.inputName));
     }
 
@@ -95,7 +92,7 @@ public class CircleEdit extends Stage {
         this.mainPane.getChildren().add(this.addNewPart(this.isInitialState));
     }
 
-    private HBox addNewPart(Label label, TextArea textInput) {
+    private HBox addNewPart(Label label, TextField textInput) {
         HBox pane = new HBox(10);
         pane.getChildren().addAll(label, textInput);
         pane.setAlignment(Pos.CENTER);

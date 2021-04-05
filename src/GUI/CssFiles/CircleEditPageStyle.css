@@ -14,11 +14,15 @@
     -fx-font-weight: bolder;
 }
 
-.text-area {
+.text-field {
     -fx-pref-width: 200px;
     -fx-pref-height: 40px;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
+    -fx-font-size: 16px;
+    -fx-font-family: "Arial Black";
+    -fx-alignment: center;
+    -fx-text-alignment: center;
     -fx-background-color: #d6e4f0;
     -fx-border-color: #163172;
 }

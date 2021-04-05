@@ -3,13 +3,11 @@ package GUI;
 import GUI.Shapes.ArrowToItSelf;
 import GUI.Shapes.RegularArrow;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
@@ -93,7 +91,19 @@ public class Draw extends Application {
                             for (State state : Main.automatas.states) {
                                 AnchorPane circlePane = new AnchorPane();
 
-                                circlePane.setOnMouseClicked(event1 -> Platform.runLater(() -> new CircleEdit(state)));
+                                circlePane.setOnMouseClicked(event1 -> {
+                                    if (event1.getButton() == MouseButton.PRIMARY) {
+                                        Platform.runLater(() -> new CircleEdit(state));
+                                    } else if (event1.getButton() == MouseButton.SECONDARY) {
+                                        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this state?", ButtonType.YES, ButtonType.NO)
+                                                .showAndWait()
+                                                .ifPresent(buttonType -> {
+                                            if (buttonType == ButtonType.YES) {
+                                                // TODO delete the state from screen!
+                                            }
+                                        });
+                                    }
+                                });
 
                                 Circle circle = new Circle(state.centerX, state.centerY, 26);
 
