@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.processData.State;
 
@@ -37,7 +38,8 @@ public class CircleEdit extends Stage {
         this.makeScene();
         this.setTitle(String.format("Edit State %s", this.state.name));
         this.setResizable(false);
-        this.show();
+        this.initModality(Modality.APPLICATION_MODAL);
+        this.showAndWait();
     }
 
     private void makeScene() {

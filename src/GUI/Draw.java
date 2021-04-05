@@ -173,7 +173,7 @@ public class Draw extends Application {
                     }
                 }
             } else {
-                stage.setAlwaysOnTop(false);
+                stage.setAlwaysOnTop(true);
                 stage.requestFocus();
             }
         });
