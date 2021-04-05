@@ -150,6 +150,26 @@ public class RegularArrow {
             AnchorPane.setTopAnchor(label, (endY - startY) / 2 - 10);
 
         } else if (startX == endX && startY < endY) {
+            MoveTo moveTo = new MoveTo(0, 0);
+
+            QuadCurveTo first = new QuadCurveTo();
+            first.setX(0);
+            first.setY(endY - startY);
+            first.setControlX((endY - startY) / 3 - 20) ;
+            first.setControlY((endY - startY) / 2);
+
+//            LineTo firstLine = new LineTo((endX - startX) - 60, -8);
+//
+//            MoveTo moveForSec = new MoveTo((endX - startX) - 60, 0);
+//
+//
+//            LineTo secLine = new LineTo((endX - startX) - 68, -1);
+
+
+            path.getElements().addAll(moveTo, first);
+
+            AnchorPane.setLeftAnchor(label, (endX - startX - 60) / 2 - 5);
+            AnchorPane.setTopAnchor(label, (startX - endX + 60) / 2 - 10);
 
         } else if (startX > endX && startY == endY) {
             MoveTo moveTo = new MoveTo(-60, 0);
