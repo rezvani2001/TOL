@@ -101,7 +101,13 @@ public class ArrowToItSelf {
         path.getElements().add(secondLine);
 
 
+        path.setStrokeWidth(2);
+        path.setStroke(Color.BLACK);
+
         Label label = new Label(this.label);
+
+        label.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; " +
+                "-fx-border-width: 1; -fx-border-color: red");
 
         path.setStroke(Color.BLACK);
         path.setStrokeWidth(2);

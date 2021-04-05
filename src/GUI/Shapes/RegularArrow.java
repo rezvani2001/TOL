@@ -42,7 +42,8 @@ public class RegularArrow {
 
 
         Label label = new Label(this.label);
-        label.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+        label.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; " +
+                "-fx-border-width: 1; -fx-border-color: red");
 
         pane.getChildren().addAll(path, label);
 
@@ -67,24 +68,24 @@ public class RegularArrow {
             AnchorPane.setTopAnchor(label, (endY - startY) / 2);
 
         } else if (startX > endX && startY > endY) {
-            MoveTo moveTo = new MoveTo(0, 0);
+            MoveTo moveTo = new MoveTo(-60, 0);
 
             QuadCurveTo first = new QuadCurveTo();
-            first.setX((endX - startX) + 60);
-            first.setY((endY - startY));
-            first.setControlX((endX - startX - 60) / 4);
-            first.setControlY((endY - startY) * 0.75);
+            first.setX((endX - startX) - 30);
+            first.setY((endY - startY) + 30);
+            first.setControlX((endX - startX - 30) / 4 - 60);
+            first.setControlY((endY - startY + 30) * 0.75);
 
-            LineTo firstLine = new LineTo((endX - startX) + 53, (endY - startY) + 2);
+            LineTo firstLine = new LineTo((endX - startX) - 24, (endY - startY) + 28);
 
-            MoveTo moveForSecLine = new MoveTo((endX - startX) + 60, (endY - startY));
+            MoveTo moveForSecLine = new MoveTo((endX - startX) - 30, (endY - startY) + 30);
 
-            LineTo secLine = new LineTo((endX - startX) + 62, (endY - startY) - 7);
+            LineTo secLine = new LineTo((endX - startX) - 28, (endY - startY) + 36);
 
             path.getElements().addAll(moveTo, first, firstLine, moveForSecLine, secLine);
 
-            AnchorPane.setLeftAnchor(label, (endX - startX - 60) / 4 - 30);
-            AnchorPane.setTopAnchor(label, (endY - startY) / 2);
+            AnchorPane.setLeftAnchor(label, (endX - startX - 30) / 4 - 60);
+            AnchorPane.setTopAnchor(label, (endY - startY + 30) / 2 - 10);
 
         } else if (startX > endX && startY < endY) {
             MoveTo moveTo = new MoveTo(0, 0);
@@ -95,7 +96,7 @@ public class RegularArrow {
             first.setControlX((startX - endX - 30) * 0.75);
             first.setControlY((startY - endY + 30) / 4);
 
-            LineTo firstLine = new LineTo(2, -7);
+            LineTo firstLine = new LineTo(5, -7);
 
             LineTo secLine = new LineTo(7, 2);
 
@@ -122,14 +123,80 @@ public class RegularArrow {
             LineTo secLine = new LineTo((endX - startX) - 67, (endY - startY) - 2);
 
 
-            path.getElements().addAll(moveTo, first, firstLine, moveForSec, secLine);
+            path.getElements().addAll(moveTo, first , firstLine , moveForSec , secLine);
 
             AnchorPane.setLeftAnchor(label, (endX - startX - 90) / 4);
             AnchorPane.setTopAnchor(label, (endY - startY) / 2);
+
+        } else if (startX == endX && startY > endY) {
+            MoveTo moveTo = new MoveTo(-60 , 0);
+
+            QuadCurveTo first = new QuadCurveTo();
+            first.setX(-60);
+            first.setY(endY - startY);
+            first.setControlX((endY - startY) / 3 - 40);
+            first.setControlY((endY - startY) / 2);
+
+            LineTo firstLine = new LineTo(-68, endY - startY +3);
+
+            MoveTo moveForSec = new MoveTo(-60, endY - startY);
+
+            LineTo secLine = new LineTo(-59 , endY - startY + 9);
+
+
+            path.getElements().addAll(moveTo, first , firstLine , moveForSec , secLine);
+
+            AnchorPane.setLeftAnchor(label, (endY - startY) / 6 - 55);
+            AnchorPane.setTopAnchor(label, (endY - startY) / 2 - 10);
+
+        } else if (startX == endX && startY < endY) {
+
+        } else if (startX > endX && startY == endY) {
+            MoveTo moveTo = new MoveTo(-60, 0);
+
+            QuadCurveTo first = new QuadCurveTo();
+            first.setX(endX - startX);
+            first.setY(0);
+            first.setControlX((endX - startX - 60) / 2);
+            first.setControlY(startX - endX - 60);
+
+            LineTo firstLine = new LineTo((endX - startX) + 8, -1);
+
+            MoveTo moveForSec = new MoveTo((endX - startX) - 1, 0);
+
+            LineTo secLine = new LineTo((endX - startX) , 8);
+
+
+            path.getElements().addAll(moveTo, first, firstLine, moveForSec, secLine);
+
+            AnchorPane.setLeftAnchor(label, (endX - startX - 60) / 2 - 5);
+            AnchorPane.setTopAnchor(label, (startX - endX - 60) / 2 - 10);
+
+        } else if (startX < endX && startY == endY) {
+            MoveTo moveTo = new MoveTo(0, 0);
+
+            QuadCurveTo first = new QuadCurveTo();
+            first.setX((endX - startX) - 60);
+            first.setY(0);
+            first.setControlX((endX - startX - 60) / 2);
+            first.setControlY(startX - endX + 60);
+
+            LineTo firstLine = new LineTo((endX - startX) - 60, -8);
+
+            MoveTo moveForSec = new MoveTo((endX - startX) - 60, 0);
+
+
+            LineTo secLine = new LineTo((endX - startX) - 68, -1);
+
+
+            path.getElements().addAll(moveTo, first, firstLine, moveForSec, secLine);
+
+            AnchorPane.setLeftAnchor(label, (endX - startX - 60) / 2 - 5);
+            AnchorPane.setTopAnchor(label, (startX - endX + 60) / 2 - 10);
         }
 
         path.setStroke(Color.BLACK);
-        path.setStrokeWidth(3);
+        path.setStrokeWidth(2);
 
 
         return pane;
