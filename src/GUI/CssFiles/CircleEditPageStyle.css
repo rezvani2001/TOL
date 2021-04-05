@@ -17,6 +17,7 @@
 .button:hover {
     -fx-background-color: #163172;
     -fx-text-fill: white;
+    -fx-cursor: hand;
 }
 
 .text-field {
