@@ -1,5 +1,5 @@
 .root {
-    -fx-background-color: #1e56a0;
+    -fx-background-color: #d6e4f0;
 }
 
 .button {
@@ -14,11 +14,16 @@
     -fx-font-weight: bolder;
 }
 
+.button:hover {
+    -fx-background-color: #163172;
+    -fx-text-fill: white;
+}
+
 .text-field {
     -fx-pref-width: 200px;
     -fx-pref-height: 40px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-font-size: 16px;
     -fx-font-family: "Arial Black";
     -fx-alignment: center;

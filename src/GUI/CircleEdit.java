@@ -1,5 +1,6 @@
 package GUI;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -31,7 +32,7 @@ public class CircleEdit extends Stage {
 
     public CircleEdit(State state) {
         this.state = state;
-        this.mainPane = new VBox(8);
+        this.mainPane = new VBox(10);
         this.makeScene();
         this.setTitle(String.format("Edit State %s", this.state.name));
         this.setResizable(false);
@@ -51,6 +52,7 @@ public class CircleEdit extends Stage {
 
     private void makeSaveButton() {
         Button saveButton = new Button("Apply");
+        VBox.setMargin(saveButton, new Insets(20, 0, 0, 0));
         this.mainPane.getChildren().add(saveButton);
     }
 
