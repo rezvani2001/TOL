@@ -95,7 +95,7 @@ public class Draw extends Application {
                                     if (event1.getButton() == MouseButton.PRIMARY) {
                                         Platform.runLater(() -> new CircleEdit(state));
                                     } else if (event1.getButton() == MouseButton.SECONDARY) {
-                                        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this state?", ButtonType.YES, ButtonType.NO)
+                                        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this state " + state.name + "?", ButtonType.YES, ButtonType.NO)
                                                 .showAndWait()
                                                 .ifPresent(buttonType -> {
                                             if (buttonType == ButtonType.YES) {
