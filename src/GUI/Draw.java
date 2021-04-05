@@ -93,6 +93,8 @@ public class Draw extends Application {
                             for (State state : Main.automatas.states) {
                                 AnchorPane circlePane = new AnchorPane();
 
+                                circlePane.setOnMouseClicked(event1 -> Platform.runLater(() -> new CircleEdit(state)));
+
                                 Circle circle = new Circle(state.centerX, state.centerY, 26);
 
                                 if (state.isFinal) {
@@ -171,7 +173,7 @@ public class Draw extends Application {
                     }
                 }
             } else {
-                stage.setAlwaysOnTop(true);
+                stage.setAlwaysOnTop(false);
                 stage.requestFocus();
             }
         });
