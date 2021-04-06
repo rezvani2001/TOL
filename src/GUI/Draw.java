@@ -122,7 +122,19 @@ public class Draw extends Application {
 
                                 Circle circle = new Circle(state.centerX, state.centerY, 26);
 
-                                if (state.isFinal) {
+                                if (state.isInitial && state.isFinal) {
+                                    Circle bigCircle = new Circle(state.centerX, state.centerY, 26);
+
+                                    bigCircle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
+                                    circlePane.getChildren().add(bigCircle);
+
+                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
+                                    circle.setRadius(23);
+
+                                    AnchorPane.setTopAnchor(bigCircle , 0.0);
+                                    AnchorPane.setLeftAnchor(bigCircle , 0.0);
+
+                                } else if (state.isFinal) {
                                     circle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
                                 } else if (state.isInitial) {
                                     circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
@@ -135,14 +147,22 @@ public class Draw extends Application {
                                 Label label = new Label(state.name);
                                 circlePane.getChildren().addAll(circle, label);
 
-                                AnchorPane.setLeftAnchor(circle, 0.0);
-                                AnchorPane.setTopAnchor(circle, 0.0);
+                                if (state.isFinal && state.isInitial){
+
+                                    AnchorPane.setTopAnchor(circle , 4.0);
+                                    AnchorPane.setLeftAnchor(circle , 4.0);
+
+                                } else {
+                                    AnchorPane.setLeftAnchor(circle, 0.0);
+                                    AnchorPane.setTopAnchor(circle, 0.0);
+                                }
 
                                 AnchorPane.setTopAnchor(label, 19.5);
                                 AnchorPane.setLeftAnchor(label, 27 - label.getText().length() * 2.5);
 
                                 Platform.runLater(() -> {
                                     pane.get().getChildren().addAll(circlePane);
+
 
                                     AnchorPane.setTopAnchor(circlePane, state.centerY * 6);
                                     AnchorPane.setLeftAnchor(circlePane, state.centerX * 6);
