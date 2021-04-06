@@ -73,6 +73,8 @@ public class Main {
                 newTransition.isLoop = true;
                 for (State state : destiny.states) {
                     if (state.name.equals(transition.source)) {
+                        state.inputTR.add(newTransition);
+                        state.outputTR.add(newTransition);
                         state.hasLoop = true;
                         newTransition.start = newTransition.end = state;
                         break;
@@ -84,14 +86,14 @@ public class Main {
                 for (State state : destiny.states) {
                     if (!findFinal) {
                         if (state.name.equals(transition.destination)) {
-                            state.inputTR++;
+                            state.inputTR.add(newTransition);
                             newTransition.end = state;
                             findFinal = true;
                         }
                     }
                     if (!findStart) {
                         if (state.name.equals(transition.source)) {
-                            state.outputTR++;
+                            state.outputTR.add(newTransition);
                             newTransition.start = state;
                             findStart = true;
                         }

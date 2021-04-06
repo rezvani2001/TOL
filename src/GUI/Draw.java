@@ -18,8 +18,6 @@ import logic.processData.State;
 import logic.processData.Transitions;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -84,7 +82,6 @@ public class Draw extends Application {
                         BorderPane.setMargin(pane.get(), new Insets(0, 20, 20, 20));
                         borderPane.setCenter(pane.get());
 
-                        UiElements elements = new UiElements();
 
 
                         thread = new Thread(() -> {
@@ -100,6 +97,24 @@ public class Draw extends Application {
                                                 .ifPresent(buttonType -> {
                                             if (buttonType == ButtonType.YES) {
                                                 // TODO delete the state from screen!
+
+                                                Main.automatas.states.remove(state);
+
+                                                Platform.runLater(() ->{
+                                                    pane.get().getChildren().remove(circlePane);
+                                                });
+
+                                                for (Transitions tr : state.inputTR){
+                                                    Main.automatas.transitions.remove(tr);
+                                                    tr.start.outputTR.remove(tr);
+                                                    Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
+                                                }
+
+                                                for (Transitions tr : state.outputTR){
+                                                    Main.automatas.transitions.remove(tr);
+                                                    tr.end.inputTR.remove(tr);
+                                                    Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
+                                                }
                                             }
                                         });
                                     }
@@ -133,7 +148,7 @@ public class Draw extends Application {
                                     AnchorPane.setLeftAnchor(circlePane, state.centerX * 6);
                                 });
 
-                                elements.circles.add(circlePane);
+                                state.UIState = circlePane;
                             }
 
 
@@ -173,7 +188,7 @@ public class Draw extends Application {
                                         }
                                     });
                                 }
-                                elements.transitions.add(transitionPane);
+                                transition.uiTR = transitionPane;
                             }
                         });
                         thread.start();
@@ -198,7 +213,3 @@ public class Draw extends Application {
 }
 
 
-class UiElements {
-    public List<AnchorPane> circles = new ArrayList<>();
-    public List<AnchorPane> transitions = new ArrayList<>();
-}

@@ -1,5 +1,7 @@
 package logic.processData;
 
+import javafx.scene.layout.AnchorPane;
+
 public class Transitions {
     public String name;
 
@@ -10,4 +12,5 @@ public class Transitions {
 
     public boolean isLoop = false;
 
+    public AnchorPane uiTR;
 }
