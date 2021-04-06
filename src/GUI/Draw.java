@@ -83,7 +83,6 @@ public class Draw extends Application {
                         borderPane.setCenter(pane.get());
 
 
-
                         thread = new Thread(() -> {
                             for (State state : Main.automatas.states) {
                                 AnchorPane circlePane = new AnchorPane();
@@ -95,28 +94,27 @@ public class Draw extends Application {
                                         new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this state " + state.name + "?", ButtonType.YES, ButtonType.NO)
                                                 .showAndWait()
                                                 .ifPresent(buttonType -> {
-                                            if (buttonType == ButtonType.YES) {
-                                                // TODO delete the state from screen!
+                                                    if (buttonType == ButtonType.YES) {
 
-                                                Main.automatas.states.remove(state);
+                                                        Main.automatas.states.remove(state);
 
-                                                Platform.runLater(() ->{
-                                                    pane.get().getChildren().remove(circlePane);
+                                                        Platform.runLater(() -> {
+                                                            pane.get().getChildren().remove(circlePane);
+                                                        });
+
+                                                        for (Transitions tr : state.inputTR) {
+                                                            Main.automatas.transitions.remove(tr);
+                                                            tr.start.outputTR.remove(tr);
+                                                            Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
+                                                        }
+
+                                                        for (Transitions tr : state.outputTR) {
+                                                            Main.automatas.transitions.remove(tr);
+                                                            tr.end.inputTR.remove(tr);
+                                                            Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
+                                                        }
+                                                    }
                                                 });
-
-                                                for (Transitions tr : state.inputTR){
-                                                    Main.automatas.transitions.remove(tr);
-                                                    tr.start.outputTR.remove(tr);
-                                                    Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
-                                                }
-
-                                                for (Transitions tr : state.outputTR){
-                                                    Main.automatas.transitions.remove(tr);
-                                                    tr.end.inputTR.remove(tr);
-                                                    Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
-                                                }
-                                            }
-                                        });
                                     }
                                 });
 

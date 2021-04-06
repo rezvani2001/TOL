@@ -12,7 +12,7 @@ import logic.processData.State;
 
 public class CircleEdit extends Stage {
     // the clicked circle state and the main pane of this stage
-    private final State state;
+    private State state;
     private final VBox mainPane;
 
     // TextArea for centerXPart of this stage
@@ -53,6 +53,15 @@ public class CircleEdit extends Stage {
     private void makeSaveButton() {
         Button saveButton = new Button("Apply");
         VBox.setMargin(saveButton, new Insets(20, 0, 0, 0));
+        saveButton.setOnMouseClicked(event -> {
+            String editedName = this.inputName.getText();
+            double editedCenterX = Double.parseDouble(this.inputCenterX.getText());
+            double editedCenterY = Double.parseDouble(this.inputCenterY.getText());
+            boolean editedIsFinalState = this.isFinalState.isSelected();
+            boolean editedIsInitialState = this.isInitialState.isSelected();
+            this.state = new State(editedIsFinalState, editedIsInitialState, editedName, editedCenterX, editedCenterY);
+            this.close();
+        });
         this.mainPane.getChildren().add(saveButton);
     }
 
