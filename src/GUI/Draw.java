@@ -7,9 +7,7 @@ import javafx.scene.control.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import logic.*;
 import javafx.application.Application;
@@ -19,10 +17,11 @@ import logic.processData.Transitions;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Draw extends Application {
+    public static AnchorPane pane = new AnchorPane();
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -46,11 +45,10 @@ public class Draw extends Application {
 
         BorderPane.setMargin(buttonBox, new Insets(20));
 
-        AtomicReference<AnchorPane> pane = new AtomicReference<>(new AnchorPane());
-        pane.get().setId("WorkSpacePane");
+        pane.setId("WorkSpacePane");
 
-        BorderPane.setMargin(pane.get(), new Insets(0, 20, 20, 20));
-        borderPane.setCenter(pane.get());
+        BorderPane.setMargin(pane, new Insets(0, 20, 20, 20));
+        borderPane.setCenter(pane);
 
 
         Scene scene = new Scene(borderPane);
@@ -75,140 +73,21 @@ public class Draw extends Application {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        pane.set(new AnchorPane());
-                        pane.get().setId("WorkSpacePane");
-                        borderPane.setCenter(pane.get());
+                        pane = new AnchorPane();
+                        pane.setId("WorkSpacePane");
+                        borderPane.setCenter(pane);
 
-                        BorderPane.setMargin(pane.get(), new Insets(0, 20, 20, 20));
-                        borderPane.setCenter(pane.get());
-
+                        BorderPane.setMargin(pane, new Insets(0, 20, 20, 20));
+                        borderPane.setCenter(pane);
 
 
                         thread = new Thread(() -> {
                             for (State state : Main.automatas.states) {
-                                AnchorPane circlePane = new AnchorPane();
-
-                                circlePane.setOnMouseClicked(event1 -> {
-                                    if (event1.getButton() == MouseButton.PRIMARY) {
-                                        Platform.runLater(() -> new CircleEdit(state));
-                                    } else if (event1.getButton() == MouseButton.SECONDARY) {
-                                        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this state " + state.name + "?", ButtonType.YES, ButtonType.NO)
-                                                .showAndWait()
-                                                .ifPresent(buttonType -> {
-                                            if (buttonType == ButtonType.YES) {
-                                                // TODO delete the state from screen!
-
-                                                Main.automatas.states.remove(state);
-
-                                                Platform.runLater(() ->{
-                                                    pane.get().getChildren().remove(circlePane);
-                                                });
-
-                                                for (Transitions tr : state.inputTR){
-                                                    Main.automatas.transitions.remove(tr);
-                                                    tr.start.outputTR.remove(tr);
-                                                    Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
-                                                }
-
-                                                for (Transitions tr : state.outputTR){
-                                                    Main.automatas.transitions.remove(tr);
-                                                    tr.end.inputTR.remove(tr);
-                                                    Platform.runLater(() -> pane.get().getChildren().remove(tr.uiTR));
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-
-                                Circle circle = new Circle(state.centerX, state.centerY, 26);
-
-                                if (state.isInitial && state.isFinal) {
-                                    Circle bigCircle = new Circle(state.centerX, state.centerY, 26);
-
-                                    bigCircle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
-                                    circlePane.getChildren().add(bigCircle);
-
-                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
-                                    circle.setRadius(23);
-
-                                    AnchorPane.setTopAnchor(bigCircle , 0.0);
-                                    AnchorPane.setLeftAnchor(bigCircle , 0.0);
-
-                                } else if (state.isFinal) {
-                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: red; -fx-stroke-width: 4");
-                                } else if (state.isInitial) {
-                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: blue; -fx-stroke-width: 3");
-                                    circle.setRadius(27);
-                                } else {
-                                    circle.setStyle("-fx-fill: lightgray; -fx-stroke: black; -fx-stroke-width: 2");
-                                    circle.setRadius(28);
-                                }
-
-                                Label label = new Label(state.name);
-                                circlePane.getChildren().addAll(circle, label);
-
-                                if (state.isFinal && state.isInitial){
-
-                                    AnchorPane.setTopAnchor(circle , 4.0);
-                                    AnchorPane.setLeftAnchor(circle , 4.0);
-
-                                } else {
-                                    AnchorPane.setLeftAnchor(circle, 0.0);
-                                    AnchorPane.setTopAnchor(circle, 0.0);
-                                }
-
-                                AnchorPane.setTopAnchor(label, 19.5);
-                                AnchorPane.setLeftAnchor(label, 27 - label.getText().length() * 2.5);
-
-                                Platform.runLater(() -> {
-                                    pane.get().getChildren().addAll(circlePane);
-
-
-                                    AnchorPane.setTopAnchor(circlePane, state.centerY * 6);
-                                    AnchorPane.setLeftAnchor(circlePane, state.centerX * 6);
-                                });
-
-                                state.UIState = circlePane;
+                                Platform.runLater(() -> pane.getChildren().add(state.statePane()));
                             }
 
-
                             for (Transitions transition : Main.automatas.transitions) {
-                                AnchorPane transitionPane;
-
-                                if (transition.isLoop) {
-                                    transitionPane = new ArrowToItSelf(transition.start.centerX,
-                                            transition.start.centerY, transition.label, transition.name).pane;
-
-                                    Platform.runLater(() -> {
-                                        pane.get().getChildren().addAll(transitionPane);
-
-                                        AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 6);
-                                        AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 6 - 6);
-                                    });
-                                } else {
-                                    transitionPane = new RegularArrow(
-                                            transition.label, transition.name,
-                                            transition.start.centerX, transition.start.centerY,
-                                            transition.end.centerX, transition.end.centerY
-                                    ).pane;
-
-
-                                    Platform.runLater(() -> {
-                                        pane.get().getChildren().addAll(transitionPane);
-
-                                        if (transition.start.centerY < transition.end.centerY &&
-                                                transition.start.centerX > transition.end.centerX) {
-
-                                            AnchorPane.setLeftAnchor(transitionPane, transition.end.centerX * 6 + 60);
-                                            AnchorPane.setTopAnchor(transitionPane, transition.end.centerY * 6 + 30);
-
-                                        } else {
-                                            AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 6 + 60);
-                                            AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 6 + 30);
-                                        }
-                                    });
-                                }
-                                transition.uiTR = transitionPane;
+                                transition.transitionPane();
                             }
                         });
                         thread.start();
