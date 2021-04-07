@@ -30,7 +30,6 @@ public class State {
     public List<Transitions> inputTR = new ArrayList<>();
     public List<Transitions> outputTR = new ArrayList<>();
 
-<<<<<<< HEAD
     public State(boolean isFinal, boolean isInitial, String name, double centerX, double centerY) {
         this.isFinal = isFinal;
         this.isInitial = isInitial;
@@ -42,8 +41,7 @@ public class State {
     public State() {
 
     }
-}
-=======
+
     public AnchorPane statePane() {
         AnchorPane circlePane = new AnchorPane();
 
@@ -54,7 +52,6 @@ public class State {
                 new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this state " + this.name + "?", ButtonType.YES, ButtonType.NO)
                         .showAndWait().ifPresent(buttonType -> {
                     if (buttonType == ButtonType.YES) {
-                        // TODO delete the state from screen!
 
                         Main.automatas.states.remove(this);
 
@@ -127,4 +124,3 @@ public class State {
         return circlePane;
     }
 }
->>>>>>> 5d1a3a4752be0e2c1da32ab70d9ff184d28dfec3
