@@ -7,9 +7,7 @@ import javafx.scene.control.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import logic.*;
 import javafx.application.Application;
@@ -19,10 +17,11 @@ import logic.processData.Transitions;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Draw extends Application {
+    public static AnchorPane pane = new AnchorPane();
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -46,11 +45,10 @@ public class Draw extends Application {
 
         BorderPane.setMargin(buttonBox, new Insets(20));
 
-        AtomicReference<AnchorPane> pane = new AtomicReference<>(new AnchorPane());
-        pane.get().setId("WorkSpacePane");
+        pane.setId("WorkSpacePane");
 
-        BorderPane.setMargin(pane.get(), new Insets(0, 20, 20, 20));
-        borderPane.setCenter(pane.get());
+        BorderPane.setMargin(pane, new Insets(0, 20, 20, 20));
+        borderPane.setCenter(pane);
 
 
         Scene scene = new Scene(borderPane);
@@ -75,16 +73,16 @@ public class Draw extends Application {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        pane.set(new AnchorPane());
-                        pane.get().setId("WorkSpacePane");
-                        borderPane.setCenter(pane.get());
+                        pane = new AnchorPane();
+                        pane.setId("WorkSpacePane");
+                        borderPane.setCenter(pane);
 
-                        BorderPane.setMargin(pane.get(), new Insets(0, 20, 20, 20));
-                        borderPane.setCenter(pane.get());
-
+                        BorderPane.setMargin(pane, new Insets(0, 20, 20, 20));
+                        borderPane.setCenter(pane);
 
                         thread = new Thread(() -> {
                             for (State state : Main.automatas.states) {
+<<<<<<< HEAD
                                 AnchorPane circlePane = new AnchorPane();
 
                                 circlePane.setOnMouseClicked(event1 -> {
@@ -147,46 +145,13 @@ public class Draw extends Application {
                                 });
 
                                 state.UIState = circlePane;
+=======
+                                Platform.runLater(() -> pane.getChildren().add(state.statePane()));
+>>>>>>> 5d1a3a4752be0e2c1da32ab70d9ff184d28dfec3
                             }
 
-
                             for (Transitions transition : Main.automatas.transitions) {
-                                AnchorPane transitionPane;
-
-                                if (transition.isLoop) {
-                                    transitionPane = new ArrowToItSelf(transition.start.centerX,
-                                            transition.start.centerY, transition.label, transition.name).pane;
-
-                                    Platform.runLater(() -> {
-                                        pane.get().getChildren().addAll(transitionPane);
-
-                                        AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 6);
-                                        AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 6 - 6);
-                                    });
-                                } else {
-                                    transitionPane = new RegularArrow(
-                                            transition.label, transition.name,
-                                            transition.start.centerX, transition.start.centerY,
-                                            transition.end.centerX, transition.end.centerY
-                                    ).pane;
-
-
-                                    Platform.runLater(() -> {
-                                        pane.get().getChildren().addAll(transitionPane);
-
-                                        if (transition.start.centerY < transition.end.centerY &&
-                                                transition.start.centerX > transition.end.centerX) {
-
-                                            AnchorPane.setLeftAnchor(transitionPane, transition.end.centerX * 6 + 60);
-                                            AnchorPane.setTopAnchor(transitionPane, transition.end.centerY * 6 + 30);
-
-                                        } else {
-                                            AnchorPane.setLeftAnchor(transitionPane, transition.start.centerX * 6 + 60);
-                                            AnchorPane.setTopAnchor(transitionPane, transition.start.centerY * 6 + 30);
-                                        }
-                                    });
-                                }
-                                transition.uiTR = transitionPane;
+                                transition.transitionPane();
                             }
                         });
                         thread.start();
